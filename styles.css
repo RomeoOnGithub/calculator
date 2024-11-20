@@ -1,0 +1,25 @@
+body {
+
+}
+
+#display {
+display: flex;
+max-width: 500px;
+justify-content: center;
+margin: auto;
+border: 1px solid black;
+}
+
+#buttons {
+display: flex;
+justify-content: center;
+}
+
+    #numbers {
+    
+    }
+
+    #operators {
+    
+    }
+
