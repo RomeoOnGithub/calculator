@@ -1,6 +1,7 @@
 //global variables
 let clearOnNextDigit;
 let operatorState = [{awaiting: null}, {active: null}, {clicked: false}];
+let equalClicked = false;
 
 //variables to be displayed
 let variables = [{default: 0}, {value1: ''}, {operator: ''}, {value2: ''}, {result: ''}];
@@ -27,6 +28,11 @@ let operators = [add, subtract, multiple, divide];
 
 //calculation
 let operate = function(operator, value1, value2) {
+    if (value2 === 0 && operator === divide) {
+        displayDiv.textContent = "Nice try! Division by zero is undefined 🤨";
+        throw new Error("Division by zero attempted");
+    }
+
     variables[4].result = operator(value1, value2); //apply math operation & push return value as result (placeholder) 
     clearValues(); //clear operate(arguments)values
     variables[1].value1 = variables[4].result; //move return value to value1 (allows continuous calc.)
@@ -63,6 +69,8 @@ let operate = function(operator, value1, value2) {
                 variables[2].operator = '/';
             }
         }
+
+
 };
 
 //digit responsiveness
@@ -77,7 +85,8 @@ let operate = function(operator, value1, value2) {
     let seven = document.getElementById("7");
     let eight = document.getElementById("8");
     let nine = document.getElementById("9");
-    let digits = [zero, one, two, three, four, five, six, seven, eight, nine];
+    let decimal = document.getElementById("decimal");
+    let digits = [zero, one, two, three, four, five, six, seven, eight, nine, decimal];
 
     //button responsiveness
     const digitsButtons = document.getElementById("digits").addEventListener("click", function(event) {
@@ -87,7 +96,12 @@ let operate = function(operator, value1, value2) {
         //(error prevention) don't return 'undefined' when clicking between digits
         if (!digit) return;
 
-        //(display) switch between populating value1 & value2
+        if (equalClicked) {
+            clearAll();
+            equalClicked = false;
+        }
+
+        //(display) switch between populating value1 & value2 
         if (operatorState[1].active === null) {
             //clear dummy value a.k.a default
             variables[0].default = '';
@@ -97,39 +111,95 @@ let operate = function(operator, value1, value2) {
         } else {
             variables[3].value2 += digit;
         };
+        
+        // Limit decimals to 1 per value
+        if (operatorState[1].active === null) {
+            decimal.disabled = variables[1].value1.includes('.');
+            console.log("decimal is disabled: " + decimal.disabled);
+        } else {
+            decimal.disabled = variables[3].value2 === '' ? false : variables[3].value2.includes('.');
+            console.log("decimal is disabled: " + decimal.disabled);
+        }
 
         updateDisplay();
+
+        //console logs: selected variables
+        console.log("VARIABLES -> " + "value1 (a): " + variables[1].value1 + " || operator: " + operatorState[1].active + " || value2 (b): " + variables[3].value2);
+
     });
 
 //operator responsiveness
     //functions
         // 'C' - Clear
+        function clearAll() {
+            variables[0].default = 0;
+            variables[1].value1 = '';
+            variables[2].operator = '';
+            variables[3].value2 = '';
+            variables[4].result = '';
+            operatorState[0].awaiting = null;
+            operatorState[1].active = null;
+            deletedCharacter = '';
+            decimal.disabled = false;
+            updateDisplay();
+        };
+
         let clear = document.getElementById("clear").addEventListener("click", function() {
-            function clearAll() {
-                variables[0].default = 0;
-                variables[1].value1 = '';
-                variables[2].operator = '';
-                variables[3].value2 = '';
-                variables[4].result = '';
-                operatorState[0].awaiting = null;
-                operatorState[1].active = null;
-                updateDisplay();
-            };
             clearAll();
             clearOnNextDigit = false;
+            console.log("CLEARED")
         });
 
         // '=' - Final Operation
         let equal = document.getElementById("equal").addEventListener("click", function() {
             operate(operatorState[1].active, Number(variables[1].value1), Number(variables[3].value2));
+            equalClicked = true;
+            decimal.disabled = false;
             clearOnNextDigit = true; 
             operatorState[2].clicked = false;
-            console.log("✅ via '=': " + ', 🟢ACTIVE' + operatorState[1].active + ', 🟠AWAITING' + operatorState[0].awaiting + ', ' + operatorState[2].clicked)
+            console.log("✅ OPERATED (via 'equal'):")
+            console.log("OPERATORSTATE -> " + "last click: " + operatorState[2].clicked + " || 🟢 active operator: " + operatorState[1].active + " || 🟠 awaiting operator: " + operatorState[0].awaiting)
+            
         }); 
+
+        // '⌫` delete button
+        document.getElementById("delete").addEventListener("click", function () {
+            let deletedCharacter = '';
+
+            if (variables[3].value2 !== '') { 
+                variables[3].value2 = variables[3].value2.slice(0, -1);
+                deletedCharacter = variables[3].value2.slice(0, -1);
+            } else if (variables[3].value2 === '' && operatorState[1].active !== null) {
+                return; 
+            } else if (variables[1].value1 !== '' && operatorState[1].active === null) {
+                variables[1].value1 = variables[1].value1.slice(0, -1);
+                deletedCharacter = variables[1].value1.slice(0, -1);
+            }
+
+            //if a decimal was deleted, enable decimal button again
+            if (deletedCharacter === '.') {
+            decimal.disabled = false;
+            console.log(decimal.disabled);
+            }
+            if (variables[1].value1.includes('.') && variables[3].value2 === '' || variables[3].value2.includes('.')) {
+                decimal.disabled = true;
+                console.log("decimal is disabled: " + decimal.disabled);
+            } else {
+                decimal.disabled = false;
+                console.log("decimal is disabled: " + decimal.disabled);
+                console.log("VARIABLES -> " + "value1 (a): " + variables[1].value1 + " || operator: " + operatorState[1].active + " || value2 (b): " + variables[3].value2);
+            }
+
+            updateDisplay();
+        });
 
     //Operators '+', '-', '*', '/'
     const operatorsButtons = document.getElementById("operators").addEventListener("click", function(event){
         let operator = event.target.id;
+
+        if (equalClicked) {
+            equalClicked = false;
+        }
 
         if (variables[1].value1 === '') { //if user wants to start from the default '0'... //(&& operatorState[1].active !== null)
             variables[0].default = '';
@@ -153,12 +223,21 @@ let operate = function(operator, value1, value2) {
             if (operator === "divide") {operatorState[0].awaiting = operators[3]; variables[2].operator = '/'; operatorState[2].clicked = true;};
         }
 
+        decimal.disabled = false, console.log("decimal is disabled: " + decimal.disabled);
+
         updateDisplay();
 
+        //console logs:
+            //selected variables
+            console.log("VARIABLES -> " + "value1 (a): " + variables[1].value1 + " || operator: " + operatorState[1].active + " || value2 (b): " + variables[3].value2);
+            //operators
+            console.log("OPERATORSTATE -> " + "last click: " + operatorState[2].clicked + " || 🟢 active operator: " + operatorState[1].active + " || 🟠 awaiting operator: " + operatorState[0].awaiting)
+
         //trigger calculation when necessary values are present & save operator that triggered this for the continued calculation
-            console.log("❌: " + ', 🟢ACTIVE' + operatorState[1].active + ', 🟠AWAITING' + operatorState[0].awaiting)
         if (variables[1].value1 !== '' && operatorState[1].active !== null && variables[3].value2 !== '') {
             operate(operatorState[1].active, Number(variables[1].value1), Number(variables[3].value2));
-            console.log("✅ via operator : " + ', 🟢ACTIVE' + operatorState[1].active + ', 🟠AWAITING' + operatorState[0].awaiting + ', ' + operatorState[2].clicked)
+            
+            console.log("✅ OPERATED (via operator)")
+            console.log("OPERATORSTATE -> " + "last click: " + operatorState[2].clicked + " || 🟢 active operator: " + operatorState[1].active + " || 🟠 awaiting operator: " + operatorState[0].awaiting)
         };
 });
