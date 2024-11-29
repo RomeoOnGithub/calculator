@@ -14,32 +14,36 @@
         <div id="value2"></div>
         <div id="result"></div>
     </div>
-    <div id="buttons">
-        <div id="digits">
-            <button id="1" value="1">1</button>
-            <button id="2" value="2">2</button>
-            <button id="3" value="3">3</button>
-            <button id="4" value="4">4</button>
-            <button id="5" value="5">5</button>
-            <button id="6" value="6">6</button>
-            <button id="7" value="7">7</button>
-            <button id="8" value="8">8</button>
-            <button id="9" value="9">9</button>
-            <button id="0" value="0">0</button>
-            <button id="decimal" value=".">.</button>
+    <div id="buttons-container">
+        <div id="left-column">
+            <div id="functions-container">
+                <button class="function" id="clear">C</button>
+                <button class="function" id="delete">⌫</button>
+                <button class="function" id="sign">+/-</button>
+            </div>
+            <div id="digits-container">
+                <button class="digit" id="7" value="7">7</button>
+                <button class="digit" id="8" value="8">8</button>
+                <button class="digit" id="9" value="9">9</button>
+                <button class="digit" id="4" value="4">4</button>
+                <button class="digit" id="5" value="5">5</button>
+                <button class="digit" id="6" value="6">6</button>
+                <button class="digit" id="1" value="1">1</button>
+                <button class="digit" id="2" value="2">2</button>
+                <button class="digit" id="3" value="3">3</button>
+                <button class="digit" id="0" value="0">0</button>
+                <button class="digit" id="decimal" value=".">.</button>
+            </div>
         </div>
-        <div id="operators">
-            <button id="add">+</button>
-            <button id="subtract">-</button>
-            <button id="multiple">*</button>
-            <button id="divide">/</button>
+        <div id="right-column">
+            <div id="operators-container">
+                <button class="operator" id="divide">/</button>
+                <button class="operator" id="multiple">*</button>
+                <button class="operator" id="subtract">-</button>
+                <button class="operator" id="add">+</button>
+                <button class="operator" id="equal">=</button>
+            </div>
         </div>
-        <div id="functions">
-            <button id="equal">=</button>
-            <button id="clear">C</button>
-            <button id="delete">⌫</button>
-        </div>
-        
     </div>  
 
 

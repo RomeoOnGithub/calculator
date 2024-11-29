@@ -89,7 +89,7 @@ let operate = function(operator, value1, value2) {
     let digits = [zero, one, two, three, four, five, six, seven, eight, nine, decimal];
 
     //button responsiveness
-    const digitsButtons = document.getElementById("digits").addEventListener("click", function(event) {
+    const digitsButtons = document.getElementById("digits-container").addEventListener("click", function(event) {
         operatorState[2].clicked = false;
         digit = event.target.value;
         
@@ -194,7 +194,7 @@ let operate = function(operator, value1, value2) {
         });
 
     //Operators '+', '-', '*', '/'
-    const operatorsButtons = document.getElementById("operators").addEventListener("click", function(event){
+    const operatorsButtons = document.getElementById("operators-container").addEventListener("click", function(event){
         let operator = event.target.id;
 
         if (equalClicked) {

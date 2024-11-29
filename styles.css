@@ -1,25 +1,89 @@
 body {
-
 }
 
 #display {
-display: flex;
-max-width: 500px;
-justify-content: center;
+/* box */
+width: 200px;
+height: 50px;
 margin: auto;
-border: 1px solid black;
-}
-
-#buttons {
+background-color: black;
+border-radius: 10px;
 display: flex;
-justify-content: center;
+
+/* text */
+justify-content:end;
+align-items:end;
+color: white;
+font-size: 25px;
+font-weight: bold;
+padding: 10px;
+}
+    #default {
+    }
+    #value1 {
+    }
+    #operator {
+    }
+    #value2 {
+    }
+    #result {
+    }
+
+
+button {
+    /* shape */
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    /* position */
 }
 
-    #digits {
-    
+#buttons-container {
+/* box */
+width: 200px;
+height: 250px;
+margin: auto;
+background-color: rgb(222, 225, 234);
+border-bottom-left-radius: 15px;
+border-bottom-right-radius: 15px;
+display: flex;
+}
+
+#left-column {
+display: flex;
+flex-direction: column;
+width: 300px;
+}
+    #functions-container { /* equal, clear, delete */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+        .function {
+        background-color: rgb(181, 192, 211);
+        }
+    #digits-container { /* 0-9 & decimal */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+        #\30 {
+            width: 100px;
+        }
+        .digit {
+            background-color: rgb(218, 222, 231);
+            }
     }
 
-    #operators {
-    
+#right-column{
+display: flex;
+width: 100px;
+}
+    #operators-container{ /* add, subtract, multiple, divide */
+    display: flex;
+    flex-wrap: wrap;
     }
+        .operator { 
+        background-color: rgb(210, 115, 24);
+        }
 
+ 
