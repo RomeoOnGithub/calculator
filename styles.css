@@ -1,89 +1,134 @@
 body {
+    background-color: rgb(211, 211, 211);
+    display: flex;
+    justify-content: center;
+    height: 100vh; /* sets height of the body to 100% of the viewport height, making vertical centering work*/
+    align-items: center;
+    font-family: 'Roboto Mono', monospace;
+}
+#calculator {
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    width: 400px;
+}
+    #display {
+        /* positioning */
+        display: flex;
+        flex: 1.25;
+        margin-bottom: 5px;
+        /* box styling */
+        background-color: rgb(255, 255, 255);
+        border-radius: 20px;
+        box-shadow: -3.5px 3.5px rgb(128, 128, 128);
+        /* text */
+        justify-content:end;
+        align-items:end;
+        padding: 12.5px;
+
+        flex-direction: column;
+        overflow: hidden;  /* cuts off overflowed content */
+        white-space: nowrap; /* prevent line-break */
+        
+    }
+        #display_lvl1 {
+            flex: 1;
+            display: flex;
+            align-items: end;
+            color: black;
+            font-size: 50px;
+            font-weight:bolder;
+        }
+        #display_lvl2 {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            color: gray;
+            font-size: 25px;
+            font-weight: bold;
+        }
+    #buttons-container {
+        display: flex;
+        flex: 4;
+    }
+        #left-column {
+            flex: 3; /* width */
+            display: flex;
+            flex-direction: column;
+        }
+            #functions-container {
+                flex: 1; /* height */
+                display: flex;
+            }
+                #clear {
+                    flex: 2; /* width */
+                }
+                #delete {
+                    flex: 1; /* width */
+                }
+            #digits-container {
+                flex: 4; /* height */
+                display: flex;
+                flex-wrap: wrap;
+            }
+                #digits-container button {
+                    flex: 1 0 calc(33.333% - 10px);  /* a button takes up about one-third of the container */
+                }
+        #right-column {
+            flex: 1; /* width */
+            display: flex;
+        }
+            #operators-container {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+                #operators-container > * {
+                    flex: 1; /* since #operators-container needed to be stacked I had to set its direction to 'column' making flex: 1 fill space horizontally. Adding this makes children stretch evenly */
+                }
+#message{
+    display: flex;
+    justify-content: center;
+    font-style: italic;
+    margin-top: 20px;
 }
 
-#display {
-/* box */
-width: 200px;
-height: 50px;
-margin: auto;
-background-color: black;
-border-radius: 10px;
-display: flex;
-
-/* text */
-justify-content:end;
-align-items:end;
-color: white;
-font-size: 25px;
-font-weight: bold;
-padding: 10px;
-}
-    #default {
-    }
-    #value1 {
-    }
-    #operator {
-    }
-    #value2 {
-    }
-    #result {
-    }
-
-
+/* additional styling */
 button {
     /* shape */
-    width: 50px;
-    height: 50px;
     border-radius: 10px;
-    /* position */
+    font-family: inherit;
+    font-size: 25px;
+    font-weight: bold;
+    box-shadow: -3.5px 3.5px rgb(128, 128, 128);
+    border: none;
+    /* positioning */
+    margin: 5px;
 }
-
-#buttons-container {
-/* box */
-width: 200px;
-height: 250px;
-margin: auto;
-background-color: rgb(222, 225, 234);
-border-bottom-left-radius: 15px;
-border-bottom-right-radius: 15px;
-display: flex;
+button:active {
+    box-shadow: none;
+    transform: translate(-3.5px, 3.5px);
 }
-
-#left-column {
-display: flex;
-flex-direction: column;
-width: 300px;
+.function, .digit, .operator {
+    color: rgb(128, 128, 128);
+    background-color: rgb(243, 243, 243);
 }
-    #functions-container { /* equal, clear, delete */
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+.function:hover {
+    color: rgb(255, 255, 255);
     }
-        .function {
-        background-color: rgb(181, 192, 211);
-        }
-    #digits-container { /* 0-9 & decimal */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-        #\30 {
-            width: 100px;
-        }
-        .digit {
-            background-color: rgb(218, 222, 231);
-            }
-    }
-
-#right-column{
-display: flex;
-width: 100px;
+.digit:hover {
+    background-color: rgb(255, 255, 255);
 }
-    #operators-container{ /* add, subtract, multiple, divide */
-    display: flex;
-    flex-wrap: wrap;
-    }
-        .operator { 
-        background-color: rgb(210, 115, 24);
-        }
-
- 
+.operator:hover { 
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 195, 85);
+}
+#equal:hover {
+    background-color: rgb(84, 251, 82);
+}
+#delete:hover{
+    background-color:rgb(113, 163, 253);
+}
+#clear:hover {
+    background-color: rgb(250, 124, 124)
+}
